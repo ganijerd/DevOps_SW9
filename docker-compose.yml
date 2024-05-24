@@ -1,28 +1,28 @@
 version: '3.8'
 
 services:
-   db:
-     image: mysql:8.2.0
+   local-mysql:
+     image: mysql:8.3.0
      volumes:
-       - db_data:/var/lib/mysql
+       - mysql_data:/var/lib/mysql
      restart: always
      environment:
-       MYSQL_ROOT_PASSWORD: somewordpress
-       MYSQL_DATABASE: wordpress
-       MYSQL_USER: wordpress
-       MYSQL_PASSWORD: wordpress
+       MYSQL_ROOT_PASSWORD: joomla
+       MYSQL_DATABASE: joomla
+       MYSQL_USER: joomla
+       MYSQL_PASSWORD: joomla
 
-   wordpress:
+   joomla:
      depends_on:
-       - db
-     image: wordpress:6.4.2-php8.3
+       - local-mysql
+     image: joomla:latest
      ports:
        - "8000:80"
      restart: always
      environment:
-       WORDPRESS_DB_HOST: db:3306
-       WORDPRESS_DB_USER: wordpress
-       WORDPRESS_DB_PASSWORD: wordpress
-       WORDPRESS_DB_NAME: wordpress
+       JOOMLA_DB_HOST: local-mysql:3306
+       JOOMLA_DB_USER: joomla
+       JOOMLA_DB_PASSWORD: joomla
+       JOOMLA_DB_NAME: joomla
 volumes:
-    db_data: {}
+    mysql_data: {}
